@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="image/belt.png" type="image/png">
+  <title>🐶Pet Care Reminder & Health Record System🐶</title>
+  <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+      <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+
+      /* NAVIGATION BAR */
+      nav {
+        background: #6c63ff;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: box-shadow 0.3s ease;
+      }
+
+      nav:hover {
+        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      }
+
+      nav h1 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav ul li {
+        position: relative;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+        padding: 8px 16px;
+        display: block;
+      }
+
+      nav ul li a:hover {
+        opacity: 0.8;
+        background-color: #5a53e5;
+        border-radius: 8px;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+      }
+
+      nav ul li a:focus {
+        outline: none;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+      }
+
+      /* SECTIONS */
+      section {
+        display: none;
+        padding: 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-top: 2rem;
+      }
+
+      section.active {
+        display: block;
+      }
+
+      h2 {
+        color: #6c63ff;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      /* HOME SECTION */
+      #home {
+        text-align: center;
+        background: linear-gradient(135deg, #6c63ff, #8b80f9);
+        color: white;
+        padding: 5rem 2rem;
+        border-radius: 0 0 40px 40px;
+      }
+
+      #home h1 {
+        font-size: 2.5rem;
+      }
+
+      #home p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 1rem auto;
+      }
+
+      #home button {
+        background: white;
+        color: #6c63ff;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s ease;
+      }
+
+      #home button:hover {
+        background: #e7e5ff;
+      }
+
+      /* FORM STYLING */
+      form label {
+        display: block;
+        margin: 0.5rem 0 0.2rem;
+        font-weight: 600;
+      }
+
+      form input, form select, form textarea {
+        width: 100%;
+        padding: 0.6rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+
+      form button {
+        background: #6c63ff;
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s ease;
+      }
+
+      form button:hover {
+        background: #5a53e5;
+      }
+
+      /* LIST STYLES */
+      .reminder-list {
+        margin-top: 1.5rem;
+      }
+
+      .reminder {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f1f0ff;
+        border-left: 5px solid #6c63ff;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+      }
+
+      .delete-btn, .restore-btn, .perma-btn {
+        border: none;
+        color: white;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .delete-btn { background: #ff6b6b; }
+      .delete-btn:hover { background: #e35a5a; }
+
+      .restore-btn { background: #2ecc71; }
+      .restore-btn:hover { background: #27ae60; }
+
+      .perma-btn { background: #555; }
+      .perma-btn:hover { background: #333; }
+
+      footer {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #777;
+        padding: 2rem 0;
+        margin-top: 2rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 1rem;
+        }
+
+        nav ul {
+          flex-direction: column;
+          width: 100%;
+          gap: 1rem;
+        }
+
+        #home {
+          padding: 4rem 1.5rem;
+        }
+
+        form label {
+          font-size: 0.9rem;
+        }
+
+        form input, form select, form textarea {
+          font-size: 0.9rem;
+        }
+
+        footer {
+          font-size: 0.8rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        #home h1 {
+          font-size: 2rem;
+        }
+
+        #home p {
+          font-size: 1rem;
+        }
+
+        nav ul {
+          gap: 0.8rem;
+        }
+
+        form input, form select, form textarea {
+          font-size: 0.8rem;
+        }
+
+        footer {
+          font-size: 0.7rem;
+        }
+      }
+
+    </style>
+
+</head>
+
+<body>
+  <nav>
+    <h1>🐾 Pet Care System 🐾</h1>
+    <ul>
+      <li><a href="#" onclick="showSection('home')">Home</a></li>
+      <li><a href="#" onclick="showSection('reminders')">Reminders</a></li>
+      <li><a href="#" onclick="showSection('records')">Health Records</a></li>
+      <li><a href="#" onclick="showSection('deleted')">Deleted History</a></li>
+    </ul>
+  </nav>
+
+  <!-- HOME -->
+  <section id="home" class="active">
+    <h1>Welcome to Your Pet Care Dashboard 🐶🐱</h1>
+    <p>Manage feeding schedules, vet visits, vaccinations, and health records — all in one place.</p>
+    <button onclick="showSection('reminders')">Get Started</button>
+  </section>
+
+  <!-- REMINDERS -->
+  <section id="reminders">
+    <h2>Pet Care Reminders</h2>
+    <form id="reminderForm">
+      <label for="petName">Pet Name</label>
+      <input type="text" id="petName" placeholder="Enter pet name" required>
+
+      <label for="type">Reminder Type</label>
+      <select id="type" required>
+        <option value="">Select Type</option>
+        <option>Feeding</option>
+        <option>Vaccination</option>
+        <option>Vet Visit</option>
+        <option>Grooming</option>
+      </select>
+
+      <label for="date">Date & Time</label>
+      <input type="datetime-local" id="date" required>
+
+      <button type="submit">Add Reminder</button>
+    </form>
+
+    <div class="reminder-list" id="reminderList">
+      <h3>Upcoming Reminders</h3>
+      <p id="noReminders">No reminders yet. Add one above!</p>
+    </div>
+  </section>
+
+  <!-- HEALTH RECORDS -->
+  <section id="records">
+    <h2>Pet Health Records</h2>
+    <form id="recordForm">
+      <label for="recordPet">Pet Name</label>
+      <input type="text" id="recordPet" placeholder="Enter pet name" required>
+
+      <label for="recordType">Record Type</label>
+      <select id="recordType" required>
+        <option value="">Select Type</option>
+        <option>Vaccination</option>
+        <option>Checkup</option>
+        <option>Medication</option>
+        <option>Surgery</option>
+      </select>
+
+      <label for="recordDate">Date</label>
+      <input type="date" id="recordDate" required>
+
+      <label for="notes">Notes</label>
+      <textarea id="notes" placeholder="Enter any additional notes..." rows="3"></textarea>
+
+      <button type="submit">Add Record</button>
+    </form>
+
+    <div class="reminder-list" id="recordList">
+      <h3>Health Record Log</h3>
+      <p id="noRecords">No health records added yet.</p>
+    </div>
+  </section>
+
+  <!-- DELETED HISTORY -->
+  <section id="deleted">
+    <h2>Deleted History</h2>
+    <div class="reminder-list" id="deletedList">
+      <p id="noDeleted">No deleted records yet.</p>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Pet Care Reminder System — Keep your pets healthy 🐾
+  </footer>
+
+  <script>
+// Elements
+const form = document.getElementById('reminderForm');
+const recordForm = document.getElementById('recordForm');
+const list = document.getElementById('reminderList');
+const deletedList = document.getElementById('deletedList');
+const recordList = document.getElementById('recordList');
+const noReminders = document.getElementById('noReminders');
+const noDeleted = document.getElementById('noDeleted');
+const noRecords = document.getElementById('noRecords');
+
+// NAVIGATION
+function showSection(id) {
+  document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// INITIAL LOAD
+document.addEventListener('DOMContentLoaded', () => {
+  const savedReminders = JSON.parse(localStorage.getItem('reminders')) || [];
+  const deletedReminders = JSON.parse(localStorage.getItem('deletedReminders')) || [];
+  const healthRecords = JSON.parse(localStorage.getItem('records')) || [];
+  const deletedHealthRecords = JSON.parse(localStorage.getItem('deletedHealthRecords')) || [];
+
+  savedReminders.forEach(addReminderToList);
+  deletedReminders.forEach(addDeletedToList);
+  healthRecords.forEach(addRecordToList);
+  deletedHealthRecords.forEach(addDeletedRecordToList);
+
+  if (savedReminders.length > 0) noReminders.style.display = 'none';
+  if (deletedReminders.length > 0) noDeleted.style.display = 'none';
+  if (healthRecords.length > 0) noRecords.style.display = 'none';
+});
+
+/* ========== REMINDERS ========== */
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const petName = document.getElementById('petName').value;
+  const type = document.getElementById('type').value;
+  const date = document.getElementById('date').value;
+  if (!petName || !type || !date) return;
+
+  const reminderData = { petName, type, date };
+  addReminderToList(reminderData);
+  saveReminder(reminderData);
+  noReminders.style.display = 'none';
+  form.reset();
+});
+
+function addReminderToList({ petName, type, date }) {
+  const reminder = document.createElement('div');
+  reminder.classList.add('reminder');
+  reminder.innerHTML = `
+    <div>
+      <strong>${petName}</strong> — ${type}<br>
+      <small>${new Date(date).toLocaleString()}</small>
+    </div>
+    <button class="delete-btn">Delete</button>
+  `;
+  reminder.querySelector('.delete-btn').addEventListener('click', () => {
+    reminder.remove();
+    moveToDeleted({ petName, type, date });
+    if (list.querySelectorAll('.reminder').length === 1) noReminders.style.display = 'block';
+  });
+  list.appendChild(reminder);
+}
+
+function saveReminder(reminder) {
+  const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+  reminders.push(reminder);
+  localStorage.setItem('reminders', JSON.stringify(reminders));
+}
+
+function moveToDeleted(reminder) {
+  deleteReminder(reminder);
+  const deletedReminders = JSON.parse(localStorage.getItem('deletedReminders')) || [];
+  deletedReminders.push({ ...reminder, deletedAt: new Date().toISOString() });
+  localStorage.setItem('deletedReminders', JSON.stringify(deletedReminders));
+  addDeletedToList(reminder);
+  noDeleted.style.display = 'none';
+}
+
+function deleteReminder(reminderToDelete) {
+  let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+  reminders = reminders.filter(r =>
+    !(r.petName === reminderToDelete.petName &&
+      r.type === reminderToDelete.type &&
+      r.date === reminderToDelete.date)
+  );
+  localStorage.setItem('reminders', JSON.stringify(reminders));
+}
+
+/* ========== DELETED HISTORY ========== */
+function addDeletedToList({ petName, type, date, deletedAt }) {
+  const deleted = document.createElement('div');
+  deleted.classList.add('reminder');
+  deleted.innerHTML = `
+    <div>
+      <strong>${petName}</strong> — ${type}<br>
+      <small>${new Date(date).toLocaleString()}</small><br>
+      <em>Deleted Reminder Record: ${deletedAt ? new Date(deletedAt).toLocaleString() : 'Just now'}</em>
+    </div>
+    <div>
+      <button class="restore-btn">Restore</button>
+      <button class="perma-btn">Delete Forever</button>
+    </div>
+  `;
+  deleted.querySelector('.restore-btn').addEventListener('click', () => {
+    deleted.remove();
+    restoreReminder({ petName, type, date });
+    if (deletedList.querySelectorAll('.reminder').length === 1) noDeleted.style.display = 'block';
+  });
+  deleted.querySelector('.perma-btn').addEventListener('click', () => {
+    deleted.remove();
+    deleteForever({ petName, type, date });
+    if (deletedList.querySelectorAll('.reminder').length === 1) noDeleted.style.display = 'block';
+  });
+  deletedList.appendChild(deleted);
+}
+
+function restoreReminder(reminder) {
+  const deletedReminders = JSON.parse(localStorage.getItem('deletedReminders')) || [];
+  const updated = deletedReminders.filter(r => !(r.petName === reminder.petName && r.type === reminder.type && r.date === reminder.date));
+  localStorage.setItem('deletedReminders', JSON.stringify(updated));
+  saveReminder(reminder);
+  addReminderToList(reminder);
+  noReminders.style.display = 'none';
+}
+
+function deleteForever(reminder) {
+  let deletedReminders = JSON.parse(localStorage.getItem('deletedReminders')) || [];
+  deletedReminders = deletedReminders.filter(r =>
+    !(r.petName === reminder.petName && r.type === reminder.type && r.date === reminder.date)
+  );
+  localStorage.setItem('deletedReminders', JSON.stringify(deletedReminders));
+}
+
+/* ========== HEALTH RECORDS ========== */
+recordForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const pet = document.getElementById('recordPet').value;
+  const type = document.getElementById('recordType').value;
+  const date = document.getElementById('recordDate').value;
+  const notes = document.getElementById('notes').value;
+
+  if (!pet || !type || !date) return;
+
+  const record = { pet, type, date, notes };
+  addRecordToList(record);
+  saveRecord(record);
+  noRecords.style.display = 'none';
+  recordForm.reset();
+});
+
+function addRecordToList({ pet, type, date, notes }) {
+  const rec = document.createElement('div');
+  rec.classList.add('reminder');
+  rec.innerHTML = `
+    <div>
+      <strong>${pet}</strong> — ${type}<br>
+      <small>${new Date(date).toLocaleDateString()}</small><br>
+      <em>${notes || "No notes provided."}</em>
+    </div>
+    <button class="delete-btn">Delete</button>
+  `;
+  rec.querySelector('.delete-btn').addEventListener('click', () => {
+    rec.remove();
+    moveToDeletedRecord({ pet, type, date, notes });
+    if (recordList.querySelectorAll('.reminder').length === 1) noRecords.style.display = 'block';
+  });
+  recordList.appendChild(rec);
+}
+
+function saveRecord(record) {
+  const records = JSON.parse(localStorage.getItem('records')) || [];
+  records.push(record);
+  localStorage.setItem('records', JSON.stringify(records));
+}
+
+function moveToDeletedRecord(record) {
+  deleteRecord(record);
+  const deletedHealthRecords = JSON.parse(localStorage.getItem('deletedHealthRecords')) || [];
+  deletedHealthRecords.push({ ...record, deletedAt: new Date().toISOString() });
+  localStorage.setItem('deletedHealthRecords', JSON.stringify(deletedHealthRecords));
+  addDeletedRecordToList(record);
+  noDeleted.style.display = 'none';
+}
+
+function deleteRecord(recordToDelete) {
+  let records = JSON.parse(localStorage.getItem('records')) || [];
+  records = records.filter(r =>
+    !(r.pet === recordToDelete.pet &&
+      r.type === recordToDelete.type &&
+      r.date === recordToDelete.date)
+  );
+  localStorage.setItem('records', JSON.stringify(records));
+}
+
+/* ========== DELETED HEALTH RECORDS ========== */
+function addDeletedRecordToList({ pet, type, date, notes, deletedAt }) {
+  const deleted = document.createElement('div');
+  deleted.classList.add('reminder');
+  deleted.innerHTML = `
+    <div>
+      <strong>${pet}</strong> — ${type}<br>
+      <small>${new Date(date).toLocaleDateString()}</small><br>
+      <em>${notes || "No notes provided."}</em><br>
+      <em>Deleted Health Record: ${deletedAt ? new Date(deletedAt).toLocaleString() : 'Just now'}</em>
+    </div>
+    <div>
+      <button class="restore-btn">Restore</button>
+      <button class="perma-btn">Delete Forever</button>
+    </div>
+  `;
+  deleted.querySelector('.restore-btn').addEventListener('click', () => {
+    deleted.remove();
+    restoreHealthRecord({ pet, type, date, notes });
+    if (deletedList.querySelectorAll('.reminder').length === 1) noDeleted.style.display = 'block';
+  });
+  deleted.querySelector('.perma-btn').addEventListener('click', () => {
+    deleted.remove();
+    deleteForeverHealth({ pet, type, date });
+    if (deletedList.querySelectorAll('.reminder').length === 1) noDeleted.style.display = 'block';
+  });
+  deletedList.appendChild(deleted);
+}
+
+function restoreHealthRecord(record) {
+  const deletedHealthRecords = JSON.parse(localStorage.getItem('deletedHealthRecords')) || [];
+  const updated = deletedHealthRecords.filter(r => !(r.pet === record.pet && r.type === record.type && r.date === record.date));
+  localStorage.setItem('deletedHealthRecords', JSON.stringify(updated));
+  saveRecord(record);
+  addRecordToList(record);
+  noRecords.style.display = 'none';
+}
+
+function deleteForeverHealth(record) {
+  let deletedHealthRecords = JSON.parse(localStorage.getItem('deletedHealthRecords')) || [];
+  deletedHealthRecords = deletedHealthRecords.filter(r =>
+    !(r.pet === record.pet && r.type === record.type && r.date === record.date)
+  );
+  localStorage.setItem('deletedHealthRecords', JSON.stringify(deletedHealthRecords));
+}
+
+</script>
+
+</body>
+</html>
